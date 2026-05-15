@@ -1,7 +1,7 @@
 SECRET_KEY = "test"
 
 INSTALLED_APPS = [
-    "template_fragments",
+    "render_fragment",
 ]
 
 DATABASES = {

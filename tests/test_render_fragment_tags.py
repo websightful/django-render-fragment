@@ -24,14 +24,14 @@ def _render(source, context=None):
 class RenderFragmentTagTest(SimpleTestCase):
     def test_renders_in_place_with_kwargs(self):
         out = _render(
-            '{% load template_fragments_tags %}'
+            '{% load render_fragment_tags %}'
             '{% render_fragment "fragments/greeting.html" with name="World" %}'
         )
         self.assertEqual(out, "Hello, World!")
 
     def test_captures_into_variable_with_as(self):
         out = _render(
-            '{% load template_fragments_tags %}'
+            '{% load render_fragment_tags %}'
             '{% render_fragment "fragments/greeting.html" with name="Jane" as g %}'
             'before|{{ g }}|after'
         )
@@ -39,7 +39,7 @@ class RenderFragmentTagTest(SimpleTestCase):
 
     def test_supports_extends_inside_fragment(self):
         out = _render(
-            '{% load template_fragments_tags %}'
+            '{% load render_fragment_tags %}'
             '{% render_fragment "fragments/card.html" with title="T" body="B" %}'
         )
         self.assertIn('<div class="card">', out)
@@ -48,7 +48,7 @@ class RenderFragmentTagTest(SimpleTestCase):
 
     def test_parent_context_is_inherited(self):
         out = _render(
-            '{% load template_fragments_tags %}'
+            '{% load render_fragment_tags %}'
             '{% render_fragment "fragments/context_inherit.html" with item="X" %}',
             {"user": SimpleNamespace(name="Alice")},
         )
@@ -56,7 +56,7 @@ class RenderFragmentTagTest(SimpleTestCase):
 
     def test_kwargs_override_parent_context(self):
         out = _render(
-            '{% load template_fragments_tags %}'
+            '{% load render_fragment_tags %}'
             '{% render_fragment "fragments/greeting.html" with name="Bob" %}',
             {"name": "Alice"},
         )
@@ -64,7 +64,7 @@ class RenderFragmentTagTest(SimpleTestCase):
 
     def test_template_name_can_be_a_variable(self):
         out = _render(
-            '{% load template_fragments_tags %}'
+            '{% load render_fragment_tags %}'
             '{% render_fragment tpl with name="V" %}',
             {"tpl": "fragments/greeting.html"},
         )
@@ -72,7 +72,7 @@ class RenderFragmentTagTest(SimpleTestCase):
 
     def test_filter_expression_in_kwarg_value(self):
         out = _render(
-            '{% load template_fragments_tags %}'
+            '{% load render_fragment_tags %}'
             '{% render_fragment "fragments/greeting.html" with name=name|upper %}',
             {"name": "lower"},
         )
@@ -81,7 +81,7 @@ class RenderFragmentTagTest(SimpleTestCase):
     def test_request_is_forwarded_to_fragment(self):
         request = RequestFactory().get("/some/path/")
         out = _render(
-            '{% load template_fragments_tags %}'
+            '{% load render_fragment_tags %}'
             '{% render_fragment "fragments/show_request.html" %}',
             {"request": request},
         )
@@ -89,7 +89,7 @@ class RenderFragmentTagTest(SimpleTestCase):
 
     def test_render_without_with_or_as(self):
         out = _render(
-            '{% load template_fragments_tags %}'
+            '{% load render_fragment_tags %}'
             '{% render_fragment "fragments/greeting.html" %}',
             {"name": "Eve"},
         )
@@ -97,7 +97,7 @@ class RenderFragmentTagTest(SimpleTestCase):
 
     def test_as_without_with_captures_into_variable(self):
         out = _render(
-            '{% load template_fragments_tags %}'
+            '{% load render_fragment_tags %}'
             '{% render_fragment "fragments/greeting.html" as g %}'
             '[{{ g }}]',
             {"name": "Z"},
@@ -106,39 +106,39 @@ class RenderFragmentTagTest(SimpleTestCase):
 
     def test_missing_template_name_raises(self):
         with self.assertRaises(TemplateSyntaxError):
-            Template('{% load template_fragments_tags %}{% render_fragment %}')
+            Template('{% load render_fragment_tags %}{% render_fragment %}')
 
     def test_with_without_args_raises(self):
         with self.assertRaises(TemplateSyntaxError):
             Template(
-                '{% load template_fragments_tags %}'
+                '{% load render_fragment_tags %}'
                 '{% render_fragment "fragments/greeting.html" with %}'
             )
 
     def test_malformed_kwarg_raises(self):
         with self.assertRaises(TemplateSyntaxError):
             Template(
-                '{% load template_fragments_tags %}'
+                '{% load render_fragment_tags %}'
                 '{% render_fragment "fragments/greeting.html" with foo %}'
             )
 
     def test_kwargs_without_with_keyword_raises(self):
         with self.assertRaises(TemplateSyntaxError):
             Template(
-                '{% load template_fragments_tags %}'
+                '{% load render_fragment_tags %}'
                 '{% render_fragment "fragments/greeting.html" name="V" %}'
             )
 
     def test_as_without_varname_raises(self):
         with self.assertRaises(TemplateSyntaxError):
             Template(
-                '{% load template_fragments_tags %}'
+                '{% load render_fragment_tags %}'
                 '{% render_fragment "fragments/greeting.html" as %}'
             )
 
     def test_only_isolates_from_parent_context(self):
         out = _render(
-            '{% load template_fragments_tags %}'
+            '{% load render_fragment_tags %}'
             '{% render_fragment "fragments/context_inherit.html" with item="X" only %}',
             {"user": SimpleNamespace(name="Alice")},
         )
@@ -146,7 +146,7 @@ class RenderFragmentTagTest(SimpleTestCase):
 
     def test_only_without_kwargs_yields_empty_context(self):
         out = _render(
-            '{% load template_fragments_tags %}'
+            '{% load render_fragment_tags %}'
             '{% render_fragment "fragments/greeting.html" only %}',
             {"name": "Parent"},
         )
@@ -155,7 +155,7 @@ class RenderFragmentTagTest(SimpleTestCase):
     def test_only_does_not_forward_request(self):
         request = RequestFactory().get("/some/path/")
         out = _render(
-            '{% load template_fragments_tags %}'
+            '{% load render_fragment_tags %}'
             '{% render_fragment "fragments/show_request.html" only %}',
             {"request": request},
         )
@@ -163,7 +163,7 @@ class RenderFragmentTagTest(SimpleTestCase):
 
     def test_only_with_kwargs_uses_only_those_values(self):
         out = _render(
-            '{% load template_fragments_tags %}'
+            '{% load render_fragment_tags %}'
             '{% render_fragment "fragments/greeting.html" with name="Pure" only %}',
             {"name": "Parent"},
         )
@@ -171,7 +171,7 @@ class RenderFragmentTagTest(SimpleTestCase):
 
     def test_only_with_as_captures_into_variable(self):
         out = _render(
-            '{% load template_fragments_tags %}'
+            '{% load render_fragment_tags %}'
             '{% render_fragment "fragments/greeting.html" with name="Pure" only as g %}'
             'before|{{ g }}|after',
             {"name": "Parent"},
@@ -180,7 +180,7 @@ class RenderFragmentTagTest(SimpleTestCase):
 
     def test_only_without_with_and_with_as_captures(self):
         out = _render(
-            '{% load template_fragments_tags %}'
+            '{% load render_fragment_tags %}'
             '{% render_fragment "fragments/greeting.html" only as g %}'
             '[{{ g }}]',
             {"name": "Parent"},
@@ -189,7 +189,7 @@ class RenderFragmentTagTest(SimpleTestCase):
 
     def test_only_supports_extends_inside_isolated_fragment(self):
         out = _render(
-            '{% load template_fragments_tags %}'
+            '{% load render_fragment_tags %}'
             '{% render_fragment "fragments/card.html" with title="T" body="B" only %}'
         )
         self.assertIn('<div class="card">', out)
@@ -199,14 +199,14 @@ class RenderFragmentTagTest(SimpleTestCase):
     def test_only_before_with_raises(self):
         with self.assertRaises(TemplateSyntaxError):
             Template(
-                '{% load template_fragments_tags %}'
+                '{% load render_fragment_tags %}'
                 '{% render_fragment "fragments/greeting.html" only with name="X" %}'
             )
 
     def test_only_between_with_and_kwargs_raises(self):
         with self.assertRaises(TemplateSyntaxError):
             Template(
-                '{% load template_fragments_tags %}'
+                '{% load render_fragment_tags %}'
                 '{% render_fragment "fragments/greeting.html" with only name="X" %}'
             )
 

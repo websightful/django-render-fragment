@@ -1,8 +1,8 @@
-# django-template-fragments
+# django-render-fragment
 
-[![PyPI version](https://img.shields.io/pypi/v/django-template-fragments)](https://pypi.org/project/django-template-fragments/)
-![License](https://img.shields.io/pypi/l/django-template-fragments)
-![Python versions](https://img.shields.io/pypi/pyversions/django-template-fragments)
+[![PyPI version](https://img.shields.io/pypi/v/django-render-fragment)](https://pypi.org/project/django-template-fragments/)
+![License](https://img.shields.io/pypi/l/django-render-fragment)
+![Python versions](https://img.shields.io/pypi/pyversions/django-render-fragment)
 
 Provides a Django template tag, `render_fragment`, that renders template fragments with full support for `{% extends %}`. It lets you build reusable HTML components — cards, buttons, badges, form fields, list items — on top of shared base templates, the same way regular Django pages do.
 
@@ -44,7 +44,7 @@ A component that extends it:
 Used from any page:
 
 ```django
-{% load template_fragments_tags %}
+{% load render_fragment_tags %}
 
 {% render_fragment "components/card.html" with title="Welcome" body=intro only %}
 ```
@@ -61,7 +61,7 @@ Used from any page:
 ## Installation
 
 ```bash
-pip install django-template-fragments
+pip install django-render-fragment
 ```
 
 ## Setup
@@ -71,7 +71,7 @@ Add it to your Django project:
 ```python
 INSTALLED_APPS = [
     ...
-    "template_fragments",
+    "render_fragment",
 ]
 ```
 
@@ -80,7 +80,7 @@ INSTALLED_APPS = [
 Load the tag library in any template that needs it:
 
 ```django
-{% load template_fragments_tags %}
+{% load render_fragment_tags %}
 ```
 
 ### Full syntax
@@ -168,7 +168,7 @@ Because `only` makes a fragment depend on exactly the values you pass in, it com
 ### Caching a self-contained component
 
 ```django
-{% load cache template_fragments_tags %}
+{% load cache render_fragment_tags %}
 
 {% cache 600 product_card product.id product.updated_at %}
     {% render_fragment "components/product_card.html" with product=product only %}
@@ -182,7 +182,7 @@ The `vary_on` values (`product.id`, `product.updated_at`) form the cache key, so
 For fragments that render differently per user (a "save / unsave" button, a personalised greeting, a permission-gated panel), include `request.user.id` in `vary_on`:
 
 ```django
-{% load cache template_fragments_tags %}
+{% load cache render_fragment_tags %}
 
 {% cache 300 save_button request.user.id product.id %}
     {% render_fragment "components/save_button.html"
@@ -195,7 +195,7 @@ For anonymous users `request.user.id` resolves to `None`, which is a valid and s
 ### Caching per language
 
 ```django
-{% load cache i18n template_fragments_tags %}
+{% load cache i18n render_fragment_tags %}
 
 {% get_current_language as LANGUAGE_CODE %}
 {% cache 3600 hero_banner LANGUAGE_CODE %}
@@ -207,7 +207,7 @@ For anonymous users `request.user.id` resolves to `None`, which is a valid and s
 
 * Always pair `{% cache %}` with `only` for reusable components, so the cache key fully captures the fragment's inputs.
 * Use `request.user.id` (not `request.user`) in `vary_on` — model instances get stringified into cache keys, which can be expensive or unstable.
-* Use a dedicated cache backend (`CACHES['template_fragments']`) and `{% cache ... using="template_fragments" %}` when you want a different eviction policy from the default cache.
+* Use a dedicated cache backend (`CACHES['render_fragment']`) and `{% cache ... using="render_fragment" %}` when you want a different eviction policy from the default cache.
 
 ## Performance
 

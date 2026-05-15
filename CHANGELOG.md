@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Initial release of `django-template-fragments` with template filter `render_fragment` that autonomously renders a template fragment and optionally saves it into a context variable.  
+- Initial release of `django-render-fragment` with template tag `render_fragment` that autonomously renders a template fragment and optionally saves it into a context variable.  
 - Includes tests covering all template tag parameter variations.  
 - `tox` setup to test against multiple Django versions.
 
