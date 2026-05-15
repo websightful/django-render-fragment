@@ -6,7 +6,7 @@
 # Python package artifact files
 dist/
 build/
-django_template_fragments.egg-info/
+django_render_fragment.egg-info/
 .tox
 .venv
 

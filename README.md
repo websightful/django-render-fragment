@@ -1,6 +1,6 @@
 # django-render-fragment
 
-[![PyPI version](https://img.shields.io/pypi/v/django-render-fragment)](https://pypi.org/project/django-template-fragments/)
+[![PyPI version](https://img.shields.io/pypi/v/django-render-fragment)](https://pypi.org/project/django-render-fragment/)
 ![License](https://img.shields.io/pypi/l/django-render-fragment)
 ![Python versions](https://img.shields.io/pypi/pyversions/django-render-fragment)
 
@@ -235,9 +235,9 @@ So `render_fragment` costs roughly **1.5× a plain `{% include %}`**, or about *
   * Or, if you do not actually need `{% extends %}` for that particular component, prefer a plain `{% include %}` of a self-contained template — `render_fragment` is meant for components that genuinely benefit from template inheritance.
 * The overhead is **per inclusion**, not per render, so caching the surrounding view fragment (or using template-fragment caching) is usually more effective than micro-optimising the components themselves.
 
-## `django-template-fragments` in Production
+## `django-render-fragment` in Production
 
-`django-template-fragments` is used in production at
+`django-render-fragment` is used in production at
 
 - [PyBazaar](https://www.pybazaar.com)
 - [Make Impact dot org](https://make-impact.org)
