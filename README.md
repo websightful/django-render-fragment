@@ -174,7 +174,7 @@ Set `RENDER_FRAGMENT_MULTILINE_TAGS = True` in your Django settings to support m
 %}
 ```
 
-Note that by setting this, you will be able to use multiple lines for other template tags too.
+Note that by setting this, you will enable multiple lines for other template tags too.
 
 ## Caching fragments
 
