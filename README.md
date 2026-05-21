@@ -161,6 +161,21 @@ Inside the fragment only `title` and `body` are visible. Neither the parent cont
 
 This is the recommended default for any template you intend to reuse from multiple call sites.
 
+## Multiline support
+
+Set `RENDER_FRAGMENT_MULTILINE_TAGS = True` in your Django settings to support multiline tags like:
+
+```django
+{% render_fragment 
+  "components/comment_form.html" with 
+  post=post 
+  request=request 
+  only 
+%}
+```
+
+Note that by setting this, you will be able to use multiple lines for other template tags too.
+
 ## Caching fragments
 
 Because `only` makes a fragment depend on exactly the values you pass in, it composes very cleanly with Django's built-in `{% cache %}` tag.

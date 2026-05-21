@@ -30,3 +30,5 @@ TEMPLATES = [
         },
     },
 ]
+
+RENDER_FRAGMENT_MULTILINE_TAGS = True

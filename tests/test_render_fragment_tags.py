@@ -29,10 +29,25 @@ class RenderFragmentTagTest(SimpleTestCase):
         )
         self.assertEqual(out, "Hello, World!")
 
+    def test_renders_in_place_with_kwargs_multiline(self):
+        out = _render(
+            '{% load render_fragment_tags %}'
+            '{% render_fragment\n"fragments/greeting.html"\nwith name="World" %}'
+        )
+        self.assertEqual(out, "Hello, World!")
+
     def test_captures_into_variable_with_as(self):
         out = _render(
             '{% load render_fragment_tags %}'
             '{% render_fragment "fragments/greeting.html" with name="Jane" as g %}'
+            'before|{{ g }}|after'
+        )
+        self.assertEqual(out, "before|Hello, Jane!|after")
+
+    def test_captures_into_variable_with_as_multiline(self):
+        out = _render(
+            '{% load render_fragment_tags %}'
+            '{% render_fragment\n"fragments/greeting.html"\nwith\nname="Jane"\nas g %}'
             'before|{{ g }}|after'
         )
         self.assertEqual(out, "before|Hello, Jane!|after")
